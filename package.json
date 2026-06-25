@@ -1,0 +1,24 @@
+{
+  "name": "sincro-retiro-canarias",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "nuxt": "^4.4.8",
+    "vue": "^3.5.38",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.16.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "eslint": "^10.5.0",
+    "tailwindcss": "^3.4.19"
+  }
+}
