@@ -1,4 +1,4 @@
-import { collection, getDocs, orderBy, query } from 'firebase/firestore'
+import { collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore'
 
 export interface Participante {
   nombre: string
@@ -15,13 +15,12 @@ export interface Team {
 }
 
 export function useCompetition(competitionId: string) {
-  const { $db } = useNuxtApp()
-
   const teams = ref<Team[]>([])
   const loading = ref(true)
   const error = ref<string | null>(null)
 
   async function fetchTeams() {
+    const { $db } = useNuxtApp()
     loading.value = true
     error.value = null
     try {
@@ -41,6 +40,24 @@ export function useCompetition(competitionId: string) {
     }
   }
 
+  async function updateScore(teamId: string, puntuacion: number): Promise<void> {
+    const { $db } = useNuxtApp()
+    const teamRef = doc($db, 'competitions', competitionId, 'teams', teamId)
+    await updateDoc(teamRef, { puntuacion })
+    const team = teams.value.find(t => t.id === teamId)
+    if (team) team.puntuacion = puntuacion
+  }
+
+  async function resetAllScores(): Promise<void> {
+    const { $db } = useNuxtApp()
+    await Promise.all(
+      teams.value.map(team =>
+        updateDoc(doc($db, 'competitions', competitionId, 'teams', team.id), { puntuacion: 0 }),
+      ),
+    )
+    teams.value.forEach(team => (team.puntuacion = 0))
+  }
+
   const byStartOrder = computed(() =>
     [...teams.value].sort((a, b) => a.orden_salida - b.orden_salida),
   )
@@ -53,5 +70,5 @@ export function useCompetition(competitionId: string) {
     ),
   )
 
-  return { teams, loading, error, fetchTeams, byStartOrder, byScore }
+  return { teams, loading, error, fetchTeams, updateScore, resetAllScores, byStartOrder, byScore }
 }

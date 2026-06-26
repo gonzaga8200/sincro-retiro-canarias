@@ -2,6 +2,7 @@
 definePageMeta({ layout: false })
 
 const { login } = useAuth()
+const route = useRoute()
 
 const username = ref('')
 const password = ref('')
@@ -11,12 +12,12 @@ const loading = ref(false)
 async function handleLogin() {
   error.value = ''
   loading.value = true
-
   await nextTick()
 
   const success = login(username.value, password.value)
   if (success) {
-    await navigateTo('/')
+    const redirect = (route.query.redirect as string) || '/admin'
+    await navigateTo(redirect)
   } else {
     error.value = 'Usuario o contraseña incorrectos'
   }
