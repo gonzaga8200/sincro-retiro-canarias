@@ -17,7 +17,7 @@ onMounted(() => {
     <!-- Image -->
     <NuxtPicture
       src="/images/sincro.png"
-      alt="Natación artística sincronizada — Sincro Retiro Canarias"
+      alt="Natación artística sincronizada — Campeonato de España 2026"
       :img-attrs="{
         class: `absolute inset-0 w-full h-full object-cover object-center transition-[opacity,transform] duration-[1400ms] ease-out will-change-transform ${imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.05]'}`,
         loading: 'eager',
@@ -38,14 +38,11 @@ onMounted(() => {
       <div class="max-w-5xl mx-auto w-full px-6 sm:px-10 pb-10 sm:pb-14">
         <Transition name="hero-text" appear>
           <div v-if="textVisible" class="space-y-3">
-            <p class="text-primary-300 text-xs font-bold uppercase tracking-[0.22em]">
-              Campeonato Nacional · 2026
-            </p>
             <h1 class="text-white font-extrabold leading-none tracking-tight"
               style="font-size: clamp(2.2rem, 6vw, 4rem)"
             >
-              Sincro Retiro<br class="sm:hidden" />
-              <span class="sm:ml-3">Canarias</span>
+              Campeonato<br class="sm:hidden" />
+              <span class="sm:ml-3">de España 2026</span>
             </h1>
             <p class="text-white/50 text-sm sm:text-base font-medium">
               Natación Artística Sincronizada

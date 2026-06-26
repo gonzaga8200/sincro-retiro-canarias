@@ -8,7 +8,7 @@ const { authUser, logout } = useAuth()
       <div class="flex items-center gap-4">
         <NuxtLink to="/admin" class="flex items-center gap-2 opacity-90 hover:opacity-100 transition-opacity">
           <span class="text-xl leading-none">🏊</span>
-          <span class="font-bold text-sm hidden sm:block">Admin · Sincro Retiro Canarias</span>
+          <span class="font-bold text-sm hidden sm:block">Admin · Campeonato de España Natación Artística</span>
           <span class="font-bold text-sm sm:hidden">Admin</span>
         </NuxtLink>
       </div>

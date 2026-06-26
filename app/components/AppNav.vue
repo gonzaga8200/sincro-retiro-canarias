@@ -64,10 +64,10 @@ function onAccordionLeave(el: Element) {
           <span class="text-2xl leading-none select-none">🏊</span>
           <div class="leading-tight">
             <p class="text-sm font-bold text-gray-900 group-hover:text-primary-600 transition-colors hidden sm:block">
-              Sincro Retiro Canarias
+              Campeonato de España 2026
             </p>
             <p class="text-xs font-bold text-gray-900 group-hover:text-primary-600 transition-colors sm:hidden">
-              SRC
+              ESP 2026
             </p>
           </div>
         </NuxtLink>
