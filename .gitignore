@@ -25,3 +25,6 @@ logs
 
 # Local npm registry override
 .npmrc
+
+# Firebase hosting cache
+.firebase/
