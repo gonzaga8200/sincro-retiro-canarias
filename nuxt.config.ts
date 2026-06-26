@@ -5,7 +5,12 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
+    '@nuxt/image',
   ],
+  image: {
+    quality: 82,
+    format: ['webp', 'png'],
+  },
   runtimeConfig: {
     public: {
       firebaseApiKey: '',
