@@ -4,14 +4,6 @@ const { locale, locales } = useI18n()
 const localePath = useLocalePath()
 const switchLocalePath = useSwitchLocalePath()
 
-const flags: Record<string, string> = {
-  es: '🇪🇸',
-  en: '🇬🇧',
-  fr: '🇫🇷',
-  de: '🇩🇪',
-  it: '🇮🇹',
-  ca: '🏴󠁥󠁳󠁣󠁴󠁿',
-}
 const route = useRoute()
 
 const mobileOpen = ref(false)
@@ -148,7 +140,7 @@ function onAccordionLeave(el: Element) {
                     ? 'text-primary-600 font-semibold bg-primary-50'
                     : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'"
                 >
-                  <span class="text-base leading-none shrink-0">{{ flags[l.code] }}</span>
+                  <AppFlag :code="l.code" />
                   {{ l.name }}
                 </NuxtLink>
               </div>
@@ -231,7 +223,7 @@ function onAccordionLeave(el: Element) {
                 ? 'bg-primary-100 text-primary-700'
                 : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'"
             >
-              <span class="text-base leading-none">{{ flags[l.code] }}</span>
+              <AppFlag :code="l.code" />
               {{ l.code.toUpperCase() }}
             </NuxtLink>
           </div>
