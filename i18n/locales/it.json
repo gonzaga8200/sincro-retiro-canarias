@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "brand": "Campionato di Spagna 2026",
+    "brandShort": "ESP 2026",
+    "menu": "Menu",
+    "results": "Risultati"
+  },
+  "home": {
+    "title": "Campionato di Spagna 2026",
+    "subtitle": "Nuoto Artistico Sincronizzato",
+    "resultsBy": "Risultati per categoria"
+  },
+  "categories": {
+    "absoluto": "Assoluto",
+    "junior": "Junior",
+    "infantil": "Ragazzi",
+    "alevin": "Esordienti"
+  },
+  "modalities": {
+    "duo": "Duo",
+    "duo_mixto": "Duo Misto",
+    "combo": "Combo",
+    "equipo": "Squadra"
+  },
+  "results": {
+    "loading": "Caricamento…",
+    "participants": "Lista partecipanti",
+    "startOrder": "Ordine di gara",
+    "ranking": "Classifica",
+    "noData": "I risultati di questa categoria appariranno qui.",
+    "reserve": "Ris.",
+    "close": "Chiudi"
+  }
+}

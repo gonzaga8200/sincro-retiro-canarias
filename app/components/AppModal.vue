@@ -38,7 +38,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
               <h2 class="text-base font-semibold text-gray-800">{{ title }}</h2>
               <button
                 class="flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-                aria-label="Cerrar"
+                :aria-label="$t('results.close')"
                 @click="close"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -3,20 +3,22 @@ export interface NavItem {
   slug: string
 }
 
-export const categories: NavItem[] = [
-  { label: 'Absoluto', slug: 'absoluto' },
-  { label: 'Junior', slug: 'junior' },
-  { label: 'Infantil', slug: 'infantil' },
-  { label: 'Alevín', slug: 'alevin' },
-]
-
-export const modalities: NavItem[] = [
-  { label: 'Dúo', slug: 'duo' },
-  { label: 'Dúo Mixto', slug: 'duo-mixto' },
-  { label: 'Combo', slug: 'combo' },
-  { label: 'Equipo', slug: 'equipo' },
-]
-
 export function useNavItems() {
+  const { t } = useI18n()
+
+  const categories = computed<NavItem[]>(() => [
+    { label: t('categories.absoluto'), slug: 'absoluto' },
+    { label: t('categories.junior'), slug: 'junior' },
+    { label: t('categories.infantil'), slug: 'infantil' },
+    { label: t('categories.alevin'), slug: 'alevin' },
+  ])
+
+  const modalities = computed<NavItem[]>(() => [
+    { label: t('modalities.duo'), slug: 'duo' },
+    { label: t('modalities.duo_mixto'), slug: 'duo-mixto' },
+    { label: t('modalities.combo'), slug: 'combo' },
+    { label: t('modalities.equipo'), slug: 'equipo' },
+  ])
+
   return { categories, modalities }
 }

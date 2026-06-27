@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "brand": "Spanische Meisterschaft 2026",
+    "brandShort": "ESP 2026",
+    "menu": "Menü",
+    "results": "Ergebnisse"
+  },
+  "home": {
+    "title": "Spanische Meisterschaft 2026",
+    "subtitle": "Synchronschwimmen",
+    "resultsBy": "Ergebnisse nach Kategorie"
+  },
+  "categories": {
+    "absoluto": "Senioren",
+    "junior": "Junior",
+    "infantil": "Jugend",
+    "alevin": "Schüler"
+  },
+  "modalities": {
+    "duo": "Duo",
+    "duo_mixto": "Mixed Duo",
+    "combo": "Combo",
+    "equipo": "Mannschaft"
+  },
+  "results": {
+    "loading": "Daten werden geladen…",
+    "participants": "Teilnehmerliste",
+    "startOrder": "Startfolge",
+    "ranking": "Rangliste",
+    "noData": "Die Ergebnisse dieser Kategorie erscheinen hier.",
+    "reserve": "Ers.",
+    "close": "Schließen"
+  }
+}

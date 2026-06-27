@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "brand": "Campionat d'Espanya 2026",
+    "brandShort": "ESP 2026",
+    "menu": "Menú",
+    "results": "Resultats"
+  },
+  "home": {
+    "title": "Campionat d'Espanya 2026",
+    "subtitle": "Natació Artística Sincronitzada",
+    "resultsBy": "Resultats per categoria"
+  },
+  "categories": {
+    "absoluto": "Absolut",
+    "junior": "Junior",
+    "infantil": "Infantil",
+    "alevin": "Aleví"
+  },
+  "modalities": {
+    "duo": "Duo",
+    "duo_mixto": "Duo Mixt",
+    "combo": "Combo",
+    "equipo": "Equip"
+  },
+  "results": {
+    "loading": "Carregant dades…",
+    "participants": "Llista de participants",
+    "startOrder": "Ordre de sortida",
+    "ranking": "Classificació",
+    "noData": "Els resultats d'aquesta categoria apareixeran aquí.",
+    "reserve": "Res.",
+    "close": "Tancar"
+  }
+}

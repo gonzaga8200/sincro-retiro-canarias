@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { categories, modalities } = useNavItems()
+const localePath = useLocalePath()
+
 const imageLoaded = ref(false)
 const textVisible = ref(false)
 
@@ -41,11 +43,10 @@ onMounted(() => {
             <h1 class="text-white font-extrabold leading-none tracking-tight"
               style="font-size: clamp(2.2rem, 6vw, 4rem)"
             >
-              Campeonato<br class="sm:hidden" />
-              <span class="sm:ml-3">de España 2026</span>
+              {{ $t('home.title') }}
             </h1>
             <p class="text-white/50 text-sm sm:text-base font-medium">
-              Natación Artística Sincronizada
+              {{ $t('home.subtitle') }}
             </p>
           </div>
         </Transition>
@@ -56,7 +57,7 @@ onMounted(() => {
   <!-- Categories -->
   <section class="max-w-5xl mx-auto px-6 sm:px-10 py-12">
     <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-5">
-      Resultados por categoría
+      {{ $t('home.resultsBy') }}
     </p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -72,7 +73,7 @@ onMounted(() => {
         <ul class="p-2 space-y-0.5">
           <li v-for="mod in modalities" :key="mod.slug">
             <NuxtLink
-              :to="`/${cat.slug}/${mod.slug}`"
+              :to="localePath(`/${cat.slug}/${mod.slug}`)"
               class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
             >
               <span class="w-1 h-1 rounded-full bg-current opacity-50 shrink-0" />

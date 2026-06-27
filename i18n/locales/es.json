@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "brand": "Campeonato de España 2026",
+    "brandShort": "ESP 2026",
+    "menu": "Menú",
+    "results": "Resultados"
+  },
+  "home": {
+    "title": "Campeonato de España 2026",
+    "subtitle": "Natación Artística Sincronizada",
+    "resultsBy": "Resultados por categoría"
+  },
+  "categories": {
+    "absoluto": "Absoluto",
+    "junior": "Junior",
+    "infantil": "Infantil",
+    "alevin": "Alevín"
+  },
+  "modalities": {
+    "duo": "Dúo",
+    "duo_mixto": "Dúo Mixto",
+    "combo": "Combo",
+    "equipo": "Equipo"
+  },
+  "results": {
+    "loading": "Cargando datos…",
+    "participants": "Lista de participantes",
+    "startOrder": "Orden de Salida",
+    "ranking": "Clasificación",
+    "noData": "Los resultados de esta categoría y modalidad aparecerán aquí.",
+    "reserve": "Res.",
+    "close": "Cerrar"
+  }
+}
