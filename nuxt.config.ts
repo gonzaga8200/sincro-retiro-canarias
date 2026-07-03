@@ -10,6 +10,7 @@ const localeCompetitionRoutes = locales.flatMap(l =>
   categories.flatMap(c => modalities.map(m => `/${l}/${c}/${m}`))
 )
 const localeHomeRoutes = locales.map(l => `/${l}`)
+const localeProgramaRoutes = locales.map(l => `/${l}/programa`)
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -55,10 +56,12 @@ export default defineNuxtConfig({
         '/',
         '/login',
         '/admin',
+        '/programa',
         ...competitionRoutes,
         ...adminRoutes,
         ...localeHomeRoutes,
         ...localeCompetitionRoutes,
+        ...localeProgramaRoutes,
       ],
     },
   },

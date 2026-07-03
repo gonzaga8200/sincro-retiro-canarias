@@ -108,6 +108,17 @@ function onAccordionLeave(el: Element) {
               </div>
             </Transition>
           </div>
+
+          <!-- Programa link (desktop) -->
+          <NuxtLink
+            :to="localePath('/programa')"
+            class="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+            :class="$route.name?.toString().includes('programa')
+              ? 'text-primary-600 bg-primary-50'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+          >
+            {{ $t('nav.programa') }}
+          </NuxtLink>
         </nav>
 
         <div class="flex items-center gap-1">
@@ -209,6 +220,19 @@ function onAccordionLeave(el: Element) {
             </Transition>
           </div>
         </nav>
+
+        <!-- Programa link (mobile) -->
+        <div class="px-3 pb-1 pt-1 border-t border-gray-50 mt-1">
+          <NuxtLink
+            :to="localePath('/programa')"
+            class="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+            :class="$route.name?.toString().includes('programa')
+              ? 'text-primary-600 bg-primary-50'
+              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'"
+          >
+            {{ $t('nav.programa') }}
+          </NuxtLink>
+        </div>
 
         <!-- Language switcher (mobile) -->
         <div class="px-3 pb-3 pt-1 border-t border-gray-50 mt-1">

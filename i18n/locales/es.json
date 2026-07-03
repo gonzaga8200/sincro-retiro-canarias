@@ -3,7 +3,8 @@
     "brand": "Campeonato de España 2026",
     "brandShort": "ESP 2026",
     "menu": "Menú",
-    "results": "Resultados"
+    "results": "Resultados",
+    "programa": "Programa"
   },
   "home": {
     "title": "Campeonato de España 2026",
@@ -30,5 +31,8 @@
     "noData": "Los resultados de esta categoría y modalidad aparecerán aquí.",
     "reserve": "Res.",
     "close": "Cerrar"
+  },
+  "programa": {
+    "title": "Programa de Competición"
   }
 }

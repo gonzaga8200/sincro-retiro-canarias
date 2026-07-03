@@ -3,7 +3,8 @@
     "brand": "Spanische Meisterschaft 2026",
     "brandShort": "ESP 2026",
     "menu": "Menü",
-    "results": "Ergebnisse"
+    "results": "Ergebnisse",
+    "programa": "Programm"
   },
   "home": {
     "title": "Spanische Meisterschaft 2026",
@@ -30,5 +31,8 @@
     "noData": "Die Ergebnisse dieser Kategorie erscheinen hier.",
     "reserve": "Ers.",
     "close": "Schließen"
+  },
+  "programa": {
+    "title": "Wettkampfprogramm"
   }
 }

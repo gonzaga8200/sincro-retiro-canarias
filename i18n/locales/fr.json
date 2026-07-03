@@ -3,7 +3,8 @@
     "brand": "Championnat d'Espagne 2026",
     "brandShort": "ESP 2026",
     "menu": "Menu",
-    "results": "Résultats"
+    "results": "Résultats",
+    "programa": "Programme"
   },
   "home": {
     "title": "Championnat d'Espagne 2026",
@@ -30,5 +31,8 @@
     "noData": "Les résultats de cette catégorie apparaîtront ici.",
     "reserve": "Rés.",
     "close": "Fermer"
+  },
+  "programa": {
+    "title": "Programme de la Compétition"
   }
 }
