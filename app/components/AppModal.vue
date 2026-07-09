@@ -1,8 +1,11 @@
 <script setup lang="ts">
-defineProps<{
+withDefaults(defineProps<{
   modelValue: boolean
   title: string
-}>()
+  size?: 'md' | 'lg'
+}>(), {
+  size: 'md',
+})
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -31,7 +34,8 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
         <Transition name="modal" appear>
           <div
             v-if="modelValue"
-            class="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[80vh] flex flex-col"
+            class="bg-white rounded-2xl shadow-2xl w-full max-h-[85vh] flex flex-col"
+            :class="size === 'lg' ? 'max-w-2xl' : 'max-w-md'"
           >
             <!-- Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">

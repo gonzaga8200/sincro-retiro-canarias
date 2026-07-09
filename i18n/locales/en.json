@@ -30,7 +30,16 @@
     "ranking": "Rankings",
     "noData": "Results for this category will appear here.",
     "reserve": "Res.",
-    "close": "Close"
+    "close": "Close",
+    "info": "Info",
+    "detail": "Score breakdown",
+    "totalElementos": "Total elements",
+    "totalImpArtistica": "Total artistic impression",
+    "tdd": "TDD",
+    "bm": "BM",
+    "sincronizacion": "Synchronization",
+    "totalRutina": "Total routine",
+    "totalRutinaFiguras": "Total routine + figures"
   },
   "programa": {
     "title": "Competition Schedule"

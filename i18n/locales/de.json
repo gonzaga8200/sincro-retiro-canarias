@@ -30,7 +30,16 @@
     "ranking": "Rangliste",
     "noData": "Die Ergebnisse dieser Kategorie erscheinen hier.",
     "reserve": "Ers.",
-    "close": "Schließen"
+    "close": "Schließen",
+    "info": "Info",
+    "detail": "Punkteaufschlüsselung",
+    "totalElementos": "Gesamt Elemente",
+    "totalImpArtistica": "Gesamt künstlerischer Eindruck",
+    "tdd": "TDD",
+    "bm": "BM",
+    "sincronizacion": "Synchronisation",
+    "totalRutina": "Gesamt Kür",
+    "totalRutinaFiguras": "Gesamt Kür + Pflicht"
   },
   "programa": {
     "title": "Wettkampfprogramm"

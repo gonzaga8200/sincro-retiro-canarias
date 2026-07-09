@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Resultado } from '~/composables/useCompetition'
+
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
 const route = useRoute()
@@ -23,22 +25,9 @@ const categoryLabel = categoryLabels[categorySlug] ?? categorySlug
 const modalityLabel = modalityLabels[modalitySlug] ?? modalitySlug
 const competitionId = `${categorySlug}-${modalitySlug}`
 
-const { teams, loading, error, fetchTeams, updateScore, resetAllScores, byStartOrder } = useCompetition(competitionId)
+const { teams, loading, error, fetchTeams, updateResultado, resetAllScores, byStartOrder } = useCompetition(competitionId)
 
 onMounted(fetchTeams)
-
-// Per-team input state
-const inputs = ref<Record<string, string>>({})
-const inputErrors = ref<Record<string, string | null>>({})
-const saving = ref<Record<string, boolean>>({})
-
-watch(teams, (list) => {
-  list.forEach((team) => {
-    if (!(team.id in inputs.value)) {
-      inputs.value[team.id] = team.puntuacion > 0 ? String(team.puntuacion) : ''
-    }
-  })
-}, { immediate: true })
 
 const filter = ref('')
 const filteredTeams = computed(() =>
@@ -47,38 +36,34 @@ const filteredTeams = computed(() =>
   ),
 )
 
-function validateInput(id: string): boolean {
-  const val = inputs.value[id]?.trim() ?? ''
-  if (val === '') {
-    inputErrors.value[id] = null
-    return true
-  }
-  if (val.includes(',')) {
-    inputErrors.value[id] = 'Usa "." como separador decimal. Ej: 3.14'
-    return false
-  }
-  if (!/^\d+(\.\d+)?$/.test(val)) {
-    inputErrors.value[id] = 'Formato incorrecto. Ej: 3.14 o 189.384'
-    return false
-  }
-  inputErrors.value[id] = null
-  return true
+// Score entry modal (photo-assisted or manual)
+const showEntryModal = ref(false)
+const entryPresetTeamId = ref<string | null>(null)
+const savingEntry = ref(false)
+
+function openGlobalEntry() {
+  entryPresetTeamId.value = null
+  showEntryModal.value = true
 }
 
-async function save(teamId: string, equipo: string) {
-  if (!validateInput(teamId)) return
-  const val = inputs.value[teamId]?.trim() ?? ''
-  const puntuacion = val === '' ? 0 : parseFloat(val)
-  saving.value[teamId] = true
+function openEditEntry(teamId: string) {
+  entryPresetTeamId.value = teamId
+  showEntryModal.value = true
+}
+
+async function handleSaveEntry(payload: { teamId: string, resultado: Resultado, puntuacion: number }) {
+  const team = teams.value.find(t => t.id === payload.teamId)
+  savingEntry.value = true
   try {
-    await updateScore(teamId, puntuacion)
-    showToast(`Puntuación de ${equipo} guardada`, 'success')
+    await updateResultado(payload.teamId, payload.resultado, payload.puntuacion)
+    showToast(`Resultado de ${team?.equipo ?? 'equipo'} guardado`, 'success')
+    showEntryModal.value = false
   }
   catch {
     showToast('Error al guardar. Inténtalo de nuevo.', 'error')
   }
   finally {
-    saving.value[teamId] = false
+    savingEntry.value = false
   }
 }
 
@@ -90,7 +75,6 @@ async function confirmReset() {
   resetting.value = true
   try {
     await resetAllScores()
-    teams.value.forEach(t => (inputs.value[t.id] = ''))
     showResetConfirm.value = false
     showToast('Todas las puntuaciones han sido puestas a 0', 'success')
   }
@@ -154,13 +138,25 @@ async function confirmReset() {
           </div>
 
           <button
+            class="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium shadow-sm transition-colors shrink-0"
+            @click="openGlobalEntry"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="hidden sm:inline">Añadir resultado desde foto</span>
+            <span class="sm:hidden">Añadir</span>
+          </button>
+
+          <button
             class="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-red-200 text-red-600 text-sm font-medium hover:bg-red-50 hover:border-red-300 transition-colors shrink-0"
             @click="showResetConfirm = true"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            Resetear todo
+            <span class="hidden sm:inline">Resetear todo</span>
           </button>
         </div>
 
@@ -171,7 +167,7 @@ async function confirmReset() {
             :key="team.id"
             class="bg-white rounded-xl border border-gray-100 shadow-sm px-4 py-4"
           >
-            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div class="flex items-center gap-3">
               <div class="flex items-center gap-3 flex-1 min-w-0">
                 <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary-50 text-primary-700 text-xs font-bold shrink-0">
                   {{ team.orden_salida }}
@@ -179,40 +175,22 @@ async function confirmReset() {
                 <span class="text-sm font-medium text-gray-800 truncate">{{ team.equipo }}</span>
               </div>
 
-              <div class="flex items-start gap-2 sm:shrink-0">
-                <div class="flex flex-col gap-1">
-                  <input
-                    v-model="inputs[team.id]"
-                    type="text"
-                    inputmode="decimal"
-                    placeholder="0.000"
-                    class="w-32 px-3 py-2 border rounded-lg text-sm text-right font-mono outline-none transition"
-                    :class="inputErrors[team.id]
-                      ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-400 focus:border-red-400'
-                      : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
-                    @blur="validateInput(team.id)"
-                    @keyup.enter="save(team.id, team.equipo)"
-                  />
-                  <p v-if="inputErrors[team.id]" class="text-xs text-red-500 leading-tight w-32">
-                    {{ inputErrors[team.id] }}
-                  </p>
-                </div>
+              <span
+                class="text-sm font-mono font-semibold tabular-nums shrink-0"
+                :class="team.puntuacion > 0 ? 'text-gray-800' : 'text-gray-300'"
+              >
+                {{ team.puntuacion > 0 ? team.puntuacion.toFixed(4) : '—' }}
+              </span>
 
-                <button
-                  :disabled="saving[team.id] || !!inputErrors[team.id]"
-                  class="flex items-center justify-center h-9 px-4 rounded-lg text-sm font-medium transition-all duration-150 shrink-0"
-                  :class="saving[team.id] || inputErrors[team.id]
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-primary-600 hover:bg-primary-700 text-white shadow-sm'"
-                  @click="save(team.id, team.equipo)"
-                >
-                  <svg v-if="saving[team.id]" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
-                  <span v-else>Guardar</span>
-                </button>
-              </div>
+              <button
+                class="flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors shrink-0"
+                aria-label="Editar resultado"
+                @click="openEditEntry(team.id)"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
             </div>
           </div>
 
@@ -227,6 +205,16 @@ async function confirmReset() {
     <p v-else class="text-red-500 text-sm text-center py-12">{{ error }}</p>
 
   </div>
+
+  <!-- Score entry modal (photo-assisted or manual) -->
+  <ScoreEntryModal
+    v-model="showEntryModal"
+    :teams="teams"
+    :modality="modalitySlug"
+    :preset-team-id="entryPresetTeamId"
+    :saving="savingEntry"
+    @save="handleSaveEntry"
+  />
 
   <!-- Reset confirmation modal -->
   <AppModal v-model="showResetConfirm" title="Resetear puntuaciones">

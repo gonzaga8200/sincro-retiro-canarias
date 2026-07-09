@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Team } from '~/composables/useCompetition'
+
 const { t } = useI18n()
 const route = useRoute()
 
@@ -13,6 +15,42 @@ const { teams, loading, error, fetchTeams, byStartOrder, byScore } = useCompetit
 
 const showParticipants = ref(false)
 const showOrder = ref(false)
+
+const showDetail = ref(false)
+const detailTeam = ref<Team | null>(null)
+
+function openDetail(team: Team) {
+  if (!team.resultado) return
+  detailTeam.value = team
+  showDetail.value = true
+}
+
+interface DetailRow {
+  label: string
+  value: string
+  penalty?: boolean
+}
+
+const detailRows = computed<DetailRow[]>(() => {
+  const r = detailTeam.value?.resultado
+  if (!r) return []
+  const rows: DetailRow[] = [
+    { label: t('results.totalElementos'), value: r.totalElementos?.toFixed(4) ?? '—' },
+  ]
+  if (r.sincronizacion !== null && r.sincronizacion !== undefined) {
+    rows.push({ label: t('results.sincronizacion'), value: r.sincronizacion.toFixed(2), penalty: true })
+  }
+  rows.push(
+    { label: t('results.totalImpArtistica'), value: r.totalImpArtistica?.toFixed(4) ?? '—' },
+    { label: t('results.tdd'), value: r.tdd?.toFixed(4) ?? '—' },
+  )
+  if (r.bm) rows.push({ label: t('results.bm'), value: r.bm, penalty: true })
+  rows.push({ label: t('results.totalRutina'), value: r.totalRutina?.toFixed(4) ?? '—' })
+  if (modalitySlug.value !== 'combo' && r.totalRutinaFiguras !== null && r.totalRutinaFiguras !== undefined) {
+    rows.push({ label: t('results.totalRutinaFiguras'), value: r.totalRutinaFiguras.toFixed(4) })
+  }
+  return rows
+})
 
 onMounted(() => fetchTeams())
 </script>
@@ -69,6 +107,8 @@ onMounted(() => fetchTeams())
               v-for="(team, index) in byScore"
               :key="team.id"
               class="flex items-center gap-4 px-6 py-4"
+              :class="team.resultado ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''"
+              @click="openDetail(team)"
             >
               <span
                 class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0"
@@ -83,6 +123,17 @@ onMounted(() => fetchTeams())
               >
                 {{ team.puntuacion > 0 ? team.puntuacion.toFixed(3) : '—' }}
               </span>
+              <button
+                v-if="team.resultado"
+                class="flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors shrink-0"
+                :aria-label="$t('results.detail')"
+                @click.stop="openDetail(team)"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              <span v-else class="w-8 h-8 shrink-0" />
             </div>
           </div>
         </div>
@@ -140,5 +191,30 @@ onMounted(() => fetchTeams())
         <span class="text-sm font-medium text-gray-800">{{ team.equipo }}</span>
       </li>
     </ol>
+  </AppModal>
+
+  <!-- Score detail modal -->
+  <AppModal v-model="showDetail" :title="$t('results.detail')">
+    <div v-if="detailTeam" class="space-y-4">
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary-600">{{ detailTeam.equipo }}</p>
+      <TransitionGroup
+        tag="div"
+        appear
+        class="rounded-xl border border-gray-100 divide-y divide-gray-50 overflow-hidden"
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0 -translate-x-2"
+        enter-to-class="opacity-100 translate-x-0"
+      >
+        <div
+          v-for="(row, i) in detailRows"
+          :key="row.label"
+          :style="{ transitionDelay: `${i * 60}ms` }"
+          class="flex items-center justify-between px-4 py-3 bg-white"
+        >
+          <span class="text-sm" :class="row.penalty ? 'text-red-600 font-medium' : 'text-gray-500'">{{ row.label }}</span>
+          <span class="text-sm font-semibold font-mono tabular-nums" :class="row.penalty ? 'text-red-600' : 'text-gray-800'">{{ row.value }}</span>
+        </div>
+      </TransitionGroup>
+    </div>
   </AppModal>
 </template>

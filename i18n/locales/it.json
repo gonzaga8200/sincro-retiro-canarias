@@ -30,7 +30,16 @@
     "ranking": "Classifica",
     "noData": "I risultati di questa categoria appariranno qui.",
     "reserve": "Ris.",
-    "close": "Chiudi"
+    "close": "Chiudi",
+    "info": "Info",
+    "detail": "Dettaglio del punteggio",
+    "totalElementos": "Totale elementi",
+    "totalImpArtistica": "Totale impressione artistica",
+    "tdd": "TDD",
+    "bm": "BM",
+    "sincronizacion": "Sincronizzazione",
+    "totalRutina": "Totale programma",
+    "totalRutinaFiguras": "Totale programma + figure"
   },
   "programa": {
     "title": "Programma di Gara"

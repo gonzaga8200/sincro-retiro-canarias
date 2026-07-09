@@ -6,12 +6,23 @@ export interface Participante {
   año_nacimiento: number
 }
 
+export interface Resultado {
+  totalElementos: number | null
+  totalImpArtistica: number | null
+  tdd: number | null
+  bm: string
+  sincronizacion: number | null
+  totalRutina: number | null
+  totalRutinaFiguras: number | null
+}
+
 export interface Team {
   id: string
   equipo: string
   orden_salida: number
   puntuacion: number
   participantes: Participante[]
+  resultado?: Resultado | null
 }
 
 export function useCompetition(competitionId: string) {
@@ -48,14 +59,28 @@ export function useCompetition(competitionId: string) {
     if (team) team.puntuacion = puntuacion
   }
 
+  async function updateResultado(teamId: string, resultado: Resultado, puntuacion: number): Promise<void> {
+    const { $db } = useNuxtApp()
+    const teamRef = doc($db, 'competitions', competitionId, 'teams', teamId)
+    await updateDoc(teamRef, { resultado, puntuacion })
+    const team = teams.value.find(t => t.id === teamId)
+    if (team) {
+      team.resultado = resultado
+      team.puntuacion = puntuacion
+    }
+  }
+
   async function resetAllScores(): Promise<void> {
     const { $db } = useNuxtApp()
     await Promise.all(
       teams.value.map(team =>
-        updateDoc(doc($db, 'competitions', competitionId, 'teams', team.id), { puntuacion: 0 }),
+        updateDoc(doc($db, 'competitions', competitionId, 'teams', team.id), { puntuacion: 0, resultado: null }),
       ),
     )
-    teams.value.forEach(team => (team.puntuacion = 0))
+    teams.value.forEach((team) => {
+      team.puntuacion = 0
+      team.resultado = null
+    })
   }
 
   const byStartOrder = computed(() =>
@@ -70,5 +95,5 @@ export function useCompetition(competitionId: string) {
     ),
   )
 
-  return { teams, loading, error, fetchTeams, updateScore, resetAllScores, byStartOrder, byScore }
+  return { teams, loading, error, fetchTeams, updateScore, updateResultado, resetAllScores, byStartOrder, byScore }
 }

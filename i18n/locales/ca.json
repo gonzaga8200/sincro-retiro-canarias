@@ -30,7 +30,16 @@
     "ranking": "Classificació",
     "noData": "Els resultats d'aquesta categoria apareixeran aquí.",
     "reserve": "Res.",
-    "close": "Tancar"
+    "close": "Tancar",
+    "info": "Info",
+    "detail": "Detall de la puntuació",
+    "totalElementos": "Total elements",
+    "totalImpArtistica": "Total impressió artística",
+    "tdd": "TDD",
+    "bm": "BM",
+    "sincronizacion": "Sincronització",
+    "totalRutina": "Total rutina",
+    "totalRutinaFiguras": "Total rutina + figures"
   },
   "programa": {
     "title": "Programa de Competició"

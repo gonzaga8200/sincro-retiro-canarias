@@ -30,7 +30,16 @@
     "ranking": "Clasificación",
     "noData": "Los resultados de esta categoría y modalidad aparecerán aquí.",
     "reserve": "Res.",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "info": "Info",
+    "detail": "Detalle de la puntuación",
+    "totalElementos": "Total elementos",
+    "totalImpArtistica": "Total Imp. Artística",
+    "tdd": "TDD",
+    "bm": "BM",
+    "sincronizacion": "Sincronización",
+    "totalRutina": "Total Rutina",
+    "totalRutinaFiguras": "Total Rutina + Figuras"
   },
   "programa": {
     "title": "Programa de Competición"

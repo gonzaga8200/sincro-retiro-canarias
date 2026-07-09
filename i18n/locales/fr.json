@@ -30,7 +30,16 @@
     "ranking": "Classement",
     "noData": "Les résultats de cette catégorie apparaîtront ici.",
     "reserve": "Rés.",
-    "close": "Fermer"
+    "close": "Fermer",
+    "info": "Info",
+    "detail": "Détail de la note",
+    "totalElementos": "Total éléments",
+    "totalImpArtistica": "Total impression artistique",
+    "tdd": "TDD",
+    "bm": "BM",
+    "sincronizacion": "Synchronisation",
+    "totalRutina": "Total routine",
+    "totalRutinaFiguras": "Total routine + figures"
   },
   "programa": {
     "title": "Programme de la Compétition"
