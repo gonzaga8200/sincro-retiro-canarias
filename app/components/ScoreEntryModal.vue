@@ -138,15 +138,22 @@ function onPasteValues(e: ClipboardEvent) {
   applyPaste()
 }
 
+// Mobile numeric keypads (iOS especially, but also Android under a
+// Spanish/European locale) only offer a comma for the decimal separator —
+// there is no way for the user to type a literal ".". So we accept comma
+// as an alias and normalize it to a point as soon as it's typed.
+function onNumberInput(key: FieldKey) {
+  if (fields[key].includes(',')) {
+    fields[key] = fields[key].replace(',', '.')
+  }
+}
+
 function validateNumberField(key: FieldKey): boolean {
-  const val = fields[key].trim()
+  const val = fields[key].trim().replace(',', '.')
+  fields[key] = val
   if (val === '') {
     fieldErrors[key] = null
     return true
-  }
-  if (val.includes(',')) {
-    fieldErrors[key] = 'Usa "." como separador decimal'
-    return false
   }
   if (!NUMBER_RE.test(val)) {
     fieldErrors[key] = 'Formato incorrecto'
@@ -157,7 +164,7 @@ function validateNumberField(key: FieldKey): boolean {
 }
 
 function parseFloatSafe(v: string): number | null {
-  const t = v.trim()
+  const t = v.trim().replace(',', '.')
   if (t === '' || !NUMBER_RE.test(t)) return null
   return Number.parseFloat(t)
 }
@@ -256,6 +263,7 @@ function save() {
             placeholder="0.0000"
             class="w-full px-3 py-2 border rounded-lg text-sm font-mono outline-none transition"
             :class="fieldErrors.totalElementos ? 'border-red-300 focus:ring-2 focus:ring-red-400' : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
+            @input="onNumberInput('totalElementos')"
             @blur="validateNumberField('totalElementos')"
           />
           <p v-if="fieldErrors.totalElementos" class="text-xs text-red-500 mt-1">{{ fieldErrors.totalElementos }}</p>
@@ -270,6 +278,7 @@ function save() {
             placeholder="0.0000"
             class="w-full px-3 py-2 border rounded-lg text-sm font-mono outline-none transition"
             :class="fieldErrors.totalImpArtistica ? 'border-red-300 focus:ring-2 focus:ring-red-400' : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
+            @input="onNumberInput('totalImpArtistica')"
             @blur="validateNumberField('totalImpArtistica')"
           />
           <p v-if="fieldErrors.totalImpArtistica" class="text-xs text-red-500 mt-1">{{ fieldErrors.totalImpArtistica }}</p>
@@ -284,6 +293,7 @@ function save() {
             placeholder="0.0000"
             class="w-full px-3 py-2 border rounded-lg text-sm font-mono outline-none transition"
             :class="fieldErrors.tdd ? 'border-red-300 focus:ring-2 focus:ring-red-400' : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
+            @input="onNumberInput('tdd')"
             @blur="validateNumberField('tdd')"
           />
           <p v-if="fieldErrors.tdd" class="text-xs text-red-500 mt-1">{{ fieldErrors.tdd }}</p>
@@ -298,6 +308,7 @@ function save() {
             placeholder="0.00"
             class="w-full px-3 py-2 border rounded-lg text-sm font-mono text-red-700 outline-none transition"
             :class="fieldErrors.sincronizacion ? 'border-red-400 focus:ring-2 focus:ring-red-400' : 'border-red-200 focus:ring-2 focus:ring-red-400 focus:border-red-400'"
+            @input="onNumberInput('sincronizacion')"
             @blur="validateNumberField('sincronizacion')"
           />
           <p v-if="fieldErrors.sincronizacion" class="text-xs text-red-500 mt-1">{{ fieldErrors.sincronizacion }}</p>
@@ -322,6 +333,7 @@ function save() {
             placeholder="0.0000"
             class="w-full px-3 py-2 border rounded-lg text-sm font-mono outline-none transition"
             :class="fieldErrors.totalRutina ? 'border-red-300 focus:ring-2 focus:ring-red-400' : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
+            @input="onNumberInput('totalRutina')"
             @blur="validateNumberField('totalRutina')"
           />
           <p v-if="fieldErrors.totalRutina" class="text-xs text-red-500 mt-1">{{ fieldErrors.totalRutina }}</p>
@@ -336,6 +348,7 @@ function save() {
             placeholder="0.0000"
             class="w-full px-3 py-2 border rounded-lg text-sm font-mono outline-none transition"
             :class="fieldErrors.totalRutinaFiguras ? 'border-red-300 focus:ring-2 focus:ring-red-400' : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
+            @input="onNumberInput('totalRutinaFiguras')"
             @blur="validateNumberField('totalRutinaFiguras')"
           />
           <p v-if="fieldErrors.totalRutinaFiguras" class="text-xs text-red-500 mt-1">{{ fieldErrors.totalRutinaFiguras }}</p>
