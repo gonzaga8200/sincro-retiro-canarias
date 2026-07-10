@@ -84,10 +84,13 @@ watch(() => props.modelValue, (open) => {
 
 const NUMBER_RE = /^\d+(\.\d+)?$/
 
-// Pasted values always come as exactly 6 comma-separated fields in this
-// order: elementos, imp. artística, tdd, sincronización, BM, total rutina.
+// Pasted values come as comma-separated fields in this order: elementos,
+// imp. artística, tdd, sincronización, BM, total rutina, and — for every
+// modality except combo, which has no figuras — total rutina + figuras.
 // BM is the only optional one (empty, or one/several judge codes joined
 // with hyphens) — everything else is a required number.
+const expectedPasteCount = computed(() => (showFiguras.value ? 7 : 6))
+
 function applyPaste() {
   const raw = pasteInput.value
   if (!raw.trim()) {
@@ -96,12 +99,13 @@ function applyPaste() {
   }
 
   const parts = raw.split(',').map(p => p.trim())
-  if (parts.length !== 6) {
-    pasteError.value = `Se esperaban 6 valores separados por comas, se han recibido ${parts.length}`
+  const expected = expectedPasteCount.value
+  if (parts.length !== expected) {
+    pasteError.value = `Se esperaban ${expected} valores separados por comas, se han recibido ${parts.length}`
     return
   }
 
-  const [elementos, impArtistica, tdd, sincronizacion, bm, rutina] = parts
+  const [elementos, impArtistica, tdd, sincronizacion, bm, rutina, rutinaFiguras] = parts
   const numericParts: [FieldKey, string][] = [
     ['totalElementos', elementos!],
     ['totalImpArtistica', impArtistica!],
@@ -109,6 +113,7 @@ function applyPaste() {
     ['sincronizacion', sincronizacion!],
     ['totalRutina', rutina!],
   ]
+  if (showFiguras.value) numericParts.push(['totalRutinaFiguras', rutinaFiguras!])
 
   for (const [, value] of numericParts) {
     if (value === '') {
@@ -129,6 +134,18 @@ function applyPaste() {
 
   pasteError.value = null
 }
+
+const pastePlaceholder = computed(() =>
+  showFiguras.value
+    ? '123.34, 89.2323, 4.55, 9.5, E7-E8, 299.382, 312.0450'
+    : '123.34, 89.2323, 4.55, 9.5, E7-E8, 299.382',
+)
+
+const pasteHint = computed(() =>
+  showFiguras.value
+    ? 'Orden: elementos, imp. artística, tdd, sincronización, BM, total rutina, total rutina + figuras — separados por comas. El BM puede ir vacío o con varios códigos unidos por guión.'
+    : 'Orden: elementos, imp. artística, tdd, sincronización, BM, total rutina — separados por comas. El BM puede ir vacío o con varios códigos unidos por guión.',
+)
 
 function onPasteValues(e: ClipboardEvent) {
   const text = e.clipboardData?.getData('text')
@@ -242,14 +259,14 @@ function save() {
         <input
           v-model="pasteInput"
           type="text"
-          placeholder="123.34, 89.2323, 4.55, 9.5, E7-E8, 299.382"
+          :placeholder="pastePlaceholder"
           class="w-full px-3 py-2 border rounded-lg text-sm font-mono outline-none transition"
           :class="pasteError ? 'border-red-300 focus:ring-2 focus:ring-red-400' : 'border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'"
           @paste="onPasteValues"
           @keyup.enter="applyPaste"
           @blur="applyPaste"
         />
-        <p class="text-xs text-gray-400 mt-1">Orden: elementos, imp. artística, tdd, sincronización, BM, total rutina — separados por comas. El BM puede ir vacío o con varios códigos unidos por guión.</p>
+        <p class="text-xs text-gray-400 mt-1">{{ pasteHint }}</p>
         <p v-if="pasteError" class="text-xs text-red-500 mt-1">{{ pasteError }}</p>
       </div>
 
