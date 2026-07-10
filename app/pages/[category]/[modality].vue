@@ -121,7 +121,7 @@ onMounted(() => fetchTeams())
                 class="text-lg font-bold tabular-nums"
                 :class="team.puntuacion > 0 ? 'text-primary-600' : 'text-gray-300'"
               >
-                {{ team.puntuacion > 0 ? team.puntuacion.toFixed(3) : '—' }}
+                {{ team.puntuacion > 0 ? team.puntuacion : '—' }}
               </span>
               <button
                 v-if="team.resultado"
